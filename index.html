@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Little Shop</title>
+<style>
+:root{--ink:#172033;--muted:#667085;--pink:#f5d9e8;--cream:#fffaf5;--purple:#6d4aff;--line:#eee7f0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(135deg,#f7dce9,#e6e0ff);padding:28px 18px 22px}
+.wrap{max-width:1100px;margin:auto}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-size:1.45rem;font-weight:850;letter-spacing:-.04em}
+.cart-pill{border:0;background:#fff;padding:11px 15px;border-radius:999px;font-weight:750;cursor:pointer;box-shadow:0 4px 14px #33225512}
+.hero{padding:30px 0 10px;display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:center}
+.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.16em;font-weight:800;color:#6d4aff}
+h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.02;letter-spacing:-.055em;margin:9px 0 12px}
+.hero p{color:#4d5364;max-width:480px;line-height:1.6}
+.hero-art{min-height:170px;border-radius:28px;background:#ffffff8a;display:grid;place-items:center;font-size:clamp(4rem,10vw,7rem);box-shadow:inset 0 0 0 1px #ffffff}
+main{max-width:1100px;margin:auto;padding:24px 18px 50px}
+.tools{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:20px}
+.search{flex:1;min-width:210px;display:flex;gap:10px;align-items:center;background:white;border:1px solid var(--line);padding:12px 14px;border-radius:14px}
+.search input{border:0;outline:0;width:100%;font:inherit;background:transparent}
+.count{color:var(--muted);font-size:.92rem}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 8px 25px #2b174b08}
+.product-art{height:175px;display:grid;place-items:center;font-size:4.3rem;background:linear-gradient(135deg,#fbe8f0,#eeeaff)}
+.card:nth-child(3n+2) .product-art{background:linear-gradient(135deg,#e5f4ee,#e7edff)}
+.card:nth-child(3n) .product-art{background:linear-gradient(135deg,#fff0d8,#ffe5e1)}
+.details{padding:15px}
+.details h3{margin:0 0 5px;font-size:1rem}
+.desc{color:var(--muted);font-size:.88rem;min-height:38px;margin:0 0 13px}
+.bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price{font-weight:850}
+.add{border:0;border-radius:11px;background:var(--purple);color:white;padding:10px 12px;font-weight:750;cursor:pointer}
+.add:active{transform:scale(.97)}
+.empty{padding:35px;text-align:center;color:var(--muted);grid-column:1/-1}
+footer{text-align:center;padding:24px 18px;color:var(--muted);border-top:1px solid var(--line);font-size:.9rem}
+.overlay{position:fixed;inset:0;background:#10142670;display:none;justify-content:flex-end;z-index:10}
+.overlay.open{display:flex}
+.drawer{background:white;width:min(420px,100%);height:100%;padding:22px;overflow:auto;box-shadow:-12px 0 35px #0002}
+.drawer-head{display:flex;justify-content:space-between;align-items:center}
+.drawer h2{margin:0}
+.close{border:0;background:#f3f0f8;border-radius:50%;width:38px;height:38px;font-size:1.2rem;cursor:pointer}
+.cart-items{margin:20px 0}
+.cart-row{display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:13px 0}
+.cart-emoji{font-size:2rem;background:#f8eff6;border-radius:12px;padding:8px}
+.cart-info{flex:1}
+.cart-info strong{display:block}
+.cart-info small{color:var(--muted)}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{border:1px solid var(--line);background:white;border-radius:8px;width:28px;height:28px;cursor:pointer}
+.total{display:flex;justify-content:space-between;font-size:1.1rem;font-weight:850;border-top:1px solid var(--line);padding-top:17px}
+.note{font-size:.83rem;color:var(--muted);line-height:1.5}
+@media(max-width:700px){.hero{grid-template-columns:1fr}.hero-art{min-height:110px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.product-art{height:140px}}
+@media(max-width:430px){.grid{gap:10px}.details{padding:11px}.product-art{height:120px;font-size:3.3rem}.add{padding:9px}.desc{font-size:.82rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand" id="brandName">✦ My Little Shop</div>
+      <button class="cart-pill" onclick="toggleCart(true)">🛒 Cart (<span id="cartCount">0</span>)</button>
+    </div>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">A little something special</div>
+        <h1>Find your<br>new favourite.</h1>
+        <p>Browse our collection, search for something you love, and add your favourites to your cart.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">🛍️ ✨ 🎁</div>
+    </section>
+  </div>
+</header>
+<main>
+  <div class="tools">
+    <label class="search"><span>🔎</span><input id="search" type="search" placeholder="Search products..." aria-label="Search products"></label>
+    <span class="count" id="resultCount">6 products</span>
+  </div>
+  <section class="grid" id="products" aria-live="polite"></section>
+</main>
+<footer>Made with love ✨ · Replace these sample products with your own before sharing.</footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)toggleCart(false)">
+  <aside class="drawer" aria-label="Shopping cart">
+    <div class="drawer-head"><h2>Your cart 🛒</h2><button class="close" onclick="toggleCart(false)" aria-label="Close cart">×</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="total"><span>Total</span><span id="cartTotal">Rs 0</span></div>
+    <p class="note">Demo cart only: this starter website does not process payments or send orders automatically.</p>
+  </aside>
+</div>
+<script>
+const products = [
+  {id:1,name:"Everyday Tote",desc:"A handy bag for everyday essentials.",price:850,emoji:"👜"},
+  {id:2,name:"Cute Notebook",desc:"For ideas, plans and little memories.",price:450,emoji:"📔"},
+  {id:3,name:"Gift Box",desc:"A sweet gift for someone special.",price:1200,emoji:"🎁"},
+  {id:4,name:"Beaded Bracelet",desc:"A simple accessory with a little sparkle.",price:550,emoji:"📿"},
+  {id:5,name:"Mini Pouch",desc:"Keep your small essentials together.",price:650,emoji:"👝"},
+  {id:6,name:"Sticker Pack",desc:"Add some fun to your notebooks.",price:250,emoji:"🌈"}
+];
+const cart = {};
+const money = n => "Rs " + n.toLocaleString("en-PK");
+function renderProducts(){
+  const term=document.getElementById("search").value.trim().toLowerCase();
+  const shown=products.filter(p=>(p.name+" "+p.desc).toLowerCase().includes(term));
+  document.getElementById("resultCount").textContent=shown.length+" product"+(shown.length===1?"":"s");
+  document.getElementById("products").innerHTML=shown.length?shown.map(p=>`
+    <article class="card">
+      <div class="product-art" role="img" aria-label="${p.name}">${p.emoji}</div>
+      <div class="details"><h3>${p.name}</h3><p class="desc">${p.desc}</p>
+        <div class="bottom"><span class="price">${money(p.price)}</span><button class="add" onclick="addToCart(${p.id})">+ Add</button></div>
+      </div>
+    </article>`).join(""):`<div class="empty">No products found. Try another search.</div>`;
+}
+function addToCart(id){cart[id]=(cart[id]||0)+1;renderCart();document.getElementById("cartCount").textContent=Object.values(cart).reduce((a,b)=>a+b,0)}
+function changeQty(id,delta){cart[id]=(cart[id]||0)+delta;if(cart[id]<=0)delete cart[id];renderCart();document.getElementById("cartCount").textContent=Object.values(cart).reduce((a,b)=>a+b,0)}
+function renderCart(){
+  const entries=products.filter(p=>cart[p.id]);
+  document.getElementById("cartItems").innerHTML=entries.length?entries.map(p=>`
+    <div class="cart-row"><div class="cart-emoji">${p.emoji}</div><div class="cart-info"><strong>${p.name}</strong><small>${money(p.price)} each</small></div>
+      <div class="qty"><button onclick="changeQty(${p.id},-1)" aria-label="Remove one">−</button><span>${cart[p.id]}</span><button onclick="changeQty(${p.id},1)" aria-label="Add one">+</button></div>
+    </div>`).join(""):`<div class="empty">Your cart is empty. Add something you like!</div>`;
+  const total=entries.reduce((sum,p)=>sum+p.price*cart[p.id],0);
+  document.getElementById("cartTotal").textContent=money(total);
+}
+function toggleCart(open){document.getElementById("overlay").classList.toggle("open",open)}
+document.getElementById("search").addEventListener("input",renderProducts);
+renderProducts();renderCart();
+</script>
+</body>
+</html>
